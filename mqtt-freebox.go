@@ -19,8 +19,9 @@ var fbx *freebox.Client
 var cli *client.Client
 var sigc chan os.Signal
 
-const TOP_JOIN = "landline/mqtt-free"
-const TOP_CALL = "landline/gaston"
+const TOP_JOIN     = "landline/mqtt-free"
+const TOP_FRIEND   = "landline/gaston"
+const TOP_STRANGER = "landline/eggbacon"
 
 var SMS_LOGIN, SMS_PASS string
 
@@ -50,9 +51,11 @@ Loop:
 		if new {
 			log.WithFields(log.Fields{"who": caller.Name, "when": caller.Datetime}).Info("New call")
 			if caller.ContactID > 0 {
-				publish(TOP_CALL, caller.Name)
+				publish(TOP_FRIEND, caller.Name)
 				notifySMS(caller.Name)
-			}
+			} else {
+				publish(TOP_STRANGER, caller.Number)
+      }
 			fbx.MarkRead(caller.ID)
 		}
 		// continue or stop ?
