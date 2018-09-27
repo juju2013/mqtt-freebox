@@ -144,12 +144,12 @@ func notifySMS(msg string) {
 		return
 	}
 
-  data := url.Values{
+	data := url.Values{
 		"user": {SMS_LOGIN},
 		"pass": {SMS_PASS},
 		"msg":  {msg}}
-	response, err := http.Get("https://smsapi.free-mobile.fr/sendmsg?"+data.Encode())
-  fmt.Printf("DEBUG:data=%v",data.Encode())
+	response, err := http.Get("https://smsapi.free-mobile.fr/sendmsg?" + data.Encode())
+	fmt.Printf("DEBUG:data=%v", data.Encode())
 
 	if err != nil {
 		log.Warn(response)
@@ -158,7 +158,7 @@ func notifySMS(msg string) {
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 
-  fmt.Printf("DEBUG:body=%v",body)
+	fmt.Printf("DEBUG:body=%v", body)
 	if err != nil {
 		log.Warn(response)
 	} else {
